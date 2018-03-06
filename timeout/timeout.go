@@ -17,10 +17,13 @@ func main() {
 
 func hello(w http.ResponseWriter, r *http.Request) {
 	log.Print("Making request to slow server on port:", 9999)
+
 	httpClient := heimdall.NewHTTPClient(1 * time.Millisecond)
 	_, err := httpClient.Get("http://localhost:9999/drivers", http.Header{})
 	if err != nil {
 		log.Print("failed with error: %s", err)
 		return
 	}
+
+	w.Write([]byte("Hello Gophercon"))
 }
