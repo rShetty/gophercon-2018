@@ -18,7 +18,10 @@ func main() {
 func hello(w http.ResponseWriter, r *http.Request) {
 	log.Print("Making request to slow server on port:", 9999)
 
-	backoff := heimdall.NewConstantBackoff(500)
+	backoffInterval := 500 * time.Millisecond
+	maximumJitterInterval := 50 * time.Millisecond
+
+	backoff := heimdall.NewConstantBackoff(backoffInterval, maximumJitterInterval)
 	retrier := heimdall.NewRetrier(backoff)
 	httpClient := heimdall.NewHTTPClient(1 * time.Millisecond)
 
